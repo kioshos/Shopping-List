@@ -1,11 +1,13 @@
-﻿namespace Shopping.Application.Interfaces;
+﻿using System.Collections.ObjectModel;
+
+namespace Shopping.Application.Interfaces;
 
 public interface IRepository<T>
 {
-    List<T> GetAll();
+    Task<ReadOnlyCollection<T>> GetAllAsync();
     
-    T Add(T entity);
-    T Update(T entity);
-    T Delete(int id);
-    T GetById(int id);
+    Task AddAsync(T entity);
+    Task UpdateAsync(T entity);
+    Task DeleteAsync(int id);
+    Task<T> GetByIdAsync(int id);
 }

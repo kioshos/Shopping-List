@@ -8,5 +8,6 @@ public class Item
     public int Quantity { get; set; }
     public bool IsPurchased { get; set; }
     public decimal Price { get; set; }
-    
+    public  Category Category { get; set; }
+    public ShoppingList ShoppingList { get; set; }
 }
