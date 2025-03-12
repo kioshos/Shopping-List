@@ -2,7 +2,7 @@
 
 namespace Shopping.Application.Interfaces;
 
-public interface IRepository<T>
+public interface IRepository<T> where T : class
 {
     Task<ReadOnlyCollection<T>> GetAllAsync();
     
