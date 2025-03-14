@@ -25,4 +25,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Item\Index.cshtml" />
+    </ItemGroup>
+
 </Project>
