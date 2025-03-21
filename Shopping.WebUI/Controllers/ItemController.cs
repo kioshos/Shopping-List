@@ -45,17 +45,20 @@ namespace Shopping.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItem(AddItemModel model)
         {
-
-            var itemDto = new ItemDto
+            if (ModelState.IsValid)
             {
-                Name = model.Name,
-                Price = model.Price,
-                Quantity = model.Quantity,
-                CategoryId = model.CategoryId,
-                ShoppingListId = model.ShoppingListId
-            };
-
-            await _itemService.AddItemAsync(itemDto);
+                var itemDto = new ItemDto
+                {
+                    Name = model.Name,
+                    Price = model.Price,
+                    Quantity = model.Quantity,
+                    CategoryId = model.CategoryId,
+                    ShoppingListId = model.ShoppingListId
+                    
+                };
+                await _itemService.AddItemAsync(itemDto);
+            }
+            
             return RedirectToAction("Index"); 
         }
     }
