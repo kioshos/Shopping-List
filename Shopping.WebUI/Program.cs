@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Shopping.Application.Interfaces;
 using Shopping.Application.Services;
 using Shopping.Domain.Entities;
@@ -22,6 +21,8 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddScoped<IGenericRepository<Item>, GenericRepository<Item>>();
 builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
 builder.Services.AddScoped<IGenericRepository<ShoppingList>, GenericRepository<ShoppingList>>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 // Add Unit of Work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

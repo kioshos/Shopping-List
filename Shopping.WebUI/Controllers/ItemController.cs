@@ -1,37 +1,65 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-using Shopping.Application.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shopping.Application.Interfaces;
-using Shopping.Domain.Entities;
-using Shopping.Infrastructure.UnitOfWork;
+using Shopping.WebUI.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Shopping.Application.Dtos;
 
-namespace Shopping.WebUI.Controllers;
-
-public class ItemController : Controller
+namespace Shopping.WebUI.Controllers
 {
-    private readonly IItemServices _itemServices;
-    
-    public ItemController(IItemServices itemServices)
-    
+    public class ItemController : Controller
     {
-        _itemServices = itemServices;
-    }
+        private readonly ICategoryService _categoryService;
+        private readonly IItemServices _itemService;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> AddItem(ItemDto itemDto)
-    {
-       
-        if (ModelState.IsValid)
+        public ItemController(ICategoryService categoryService, IItemServices itemService)
         {
-            await _itemServices.AddItemAsync(itemDto);
-            return RedirectToAction("Index");
+            _categoryService = categoryService;
+            _itemService = itemService;
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public async Task<IActionResult> AddItem()
+        {
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            ViewBag.Categories = categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
+            return View(new AddItemModel());
         }
 
-        return View(itemDto);
+        [HttpPost]
+        public async Task<IActionResult> AddItem(AddItemModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var categories = await _categoryService.GetAllCategoriesAsync();
+                
+                ViewBag.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
+
+                return View(model);
+            }
+
+            var itemDto = new ItemDto
+            {
+                Name = model.Name,
+                Price = model.Price,
+                Quantity = model.Quantity,
+                CategoryId = model.CategoryId,
+                ShoppingListId = model.ShoppingListId
+            };
+
+            await _itemService.AddItemAsync(itemDto);
+            return RedirectToAction("Index"); 
+        }
     }
 }

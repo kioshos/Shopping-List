@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Shopping.WebUI.Models.AddItemModel
+@{
     ViewData["Title"] = "Item Page";
 }
 
@@ -6,26 +7,38 @@
     <h1 class="display-4">Add item</h1>
 </div>
 
-<form asp-action="AddItem" method="post">
+<form asp-action="AddItem" method="post" asp-controller="Item">
     <div class="form-group">
-        <label for="Name">Item Name</label>
-        <input type="text" class="form-control" id="Name" name="Name" required />
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="Price">Price</label>
-        <input type="number" class="form-control" id="Price" name="Price" required />
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="Quantity">Quantity</label>
-        <input type="number" class="form-control" id="Quantity" name="Quantity" required />
+        <label asp-for="Quantity"></label>
+        <input asp-for="Quantity" class="form-control"/>
+        <span asp-validation-for="Quantity" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="CategoryId">CategoryId</label>
-        <input type="number" class="form-control" id="CategoryId" name="CategoryId" required />
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(ViewBag.Categories as List<SelectListItem>)">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="ShoppingListId">ShoppingListId</label>
-        <input type="number" class="form-control" id="ShoppingListId" name="ShoppingListId" required />
+        <label asp-for="ShoppingListId"></label>
+        <input asp-for="ShoppingListId" class="form-control"/>
+        <span asp-validation-for="ShoppingListId" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Add Item</button>
 </form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}
