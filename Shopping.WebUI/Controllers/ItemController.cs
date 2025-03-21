@@ -17,8 +17,17 @@ namespace Shopping.WebUI.Controllers
             _categoryService = categoryService;
             _itemService = itemService;
         }
-        public IActionResult Index()
+        [Route("AddItem")]
+        public async Task<ViewResult> Index()
         {
+            var categories = await _categoryService.GetAllCategoriesAsync();
+                
+            ViewBag.Categories = categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+            
             return View();
         }
         public async Task<IActionResult> AddItem()
@@ -32,22 +41,10 @@ namespace Shopping.WebUI.Controllers
 
             return View(new AddItemModel());
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> AddItem(AddItemModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                var categories = await _categoryService.GetAllCategoriesAsync();
-                
-                ViewBag.Categories = categories.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToList();
-
-                return View(model);
-            }
 
             var itemDto = new ItemDto
             {
