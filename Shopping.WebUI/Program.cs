@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using Shopping.Application.Interfaces;
+using Shopping.Application.Services;
 using Shopping.Domain.Entities;
+using Shopping.Infrastructure.Classes;
 using Shopping.Infrastructure.Classes.Installers;
 using Shopping.Infrastructure.Repository;
+using Shopping.Infrastructure.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +14,17 @@ builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddInfrastructure(connectionString);
-builder.Services.AddTransient<IRepository<Category>, Repository<Category>>();
-builder.Services.AddTransient<IRepository<Item>, Repository<Item>>();
-builder.Services.AddTransient<IRepository<PurchaseHistory>, Repository<PurchaseHistory>>();
-builder.Services.AddTransient<IRepository<ShoppingList>, Repository<ShoppingList>>();
+builder.Services.AddScoped<IItemServices, ItemService>();
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlite(connectionString));
+
+builder.Services.AddScoped<IGenericRepository<Item>, GenericRepository<Item>>();
+builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
+builder.Services.AddScoped<IGenericRepository<ShoppingList>, GenericRepository<ShoppingList>>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+// Add Unit of Work
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
