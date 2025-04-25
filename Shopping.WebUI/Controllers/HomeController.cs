@@ -1,31 +1,42 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Shopping.Application.Dtos;
+using Shopping.Application.Interfaces;
 using Shopping.WebUI.Models;
 
 namespace Shopping.WebUI.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly IShoppingListService _shoppingListService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IShoppingListService shoppingListService)
     {
-        _logger = logger;
+        _shoppingListService = shoppingListService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        var shoppingLists = await _shoppingListService.GetShoppingListsAsync();
+        ViewBag.ShoppingLists = shoppingLists;
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpPost]
+    public async Task<IActionResult> CreateList(string listName)
     {
-        return View();
-    }
+        if (!string.IsNullOrWhiteSpace(listName))
+        {
+            var newList = new ShoppingListDto
+            {
+                Name = listName,
+                Created = DateTime.Now
+            };
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            await _shoppingListService.CreateShoppingListAsync(newList);
+        }
+
+        return RedirectToAction("Index");
     }
 }
+// TODO натискаєш на ShoppingList і там можна побачити всі айтеми що там є і дата створення ShoppingList

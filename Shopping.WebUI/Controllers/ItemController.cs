@@ -11,22 +11,33 @@ namespace Shopping.WebUI.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IItemServices _itemService;
+        private readonly IShoppingListService _shoppingListService;
 
-        public ItemController(ICategoryService categoryService, IItemServices itemService)
+        public ItemController(ICategoryService categoryService, IItemServices itemService, IShoppingListService shoppingListService)
         {
             _categoryService = categoryService;
             _itemService = itemService;
+            _shoppingListService = shoppingListService;
         }
+
         [Route("AddItem")]
         public async Task<ViewResult> Index()
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
+           var shoppingLists = await _shoppingListService.GetShoppingListsAsync();
                 
             ViewBag.Categories = categories.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
                 Text = c.Name
             }).ToList();
+            
+            ViewBag.ShoppingLists = shoppingLists.Select(l => new SelectListItem
+             {
+                Value = l.Id.ToString(),
+                 Text = l.Name
+             }).ToList();
+
             
             return View();
         }

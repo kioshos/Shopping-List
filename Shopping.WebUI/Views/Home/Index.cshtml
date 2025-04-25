@@ -1,8 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">@Localizer["Create a new Shopping List"] </h1>
+
+    <form asp-action="CreateList" method="post" class="mb-5">
+        <div class="input-group">
+            <input type="text" name="listName" class="form-control" placeholder="@Localizer["Enter list name"]..." required />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">@Localizer["Create"]</button>
+            </div>
+        </div>
+    </form>
+
+    <h3 class="mb-3">@Localizer["Existing Lists"]:</h3>
+    <ul class="list-group">
+        @if (ViewBag.ShoppingLists != null)
+        {
+            foreach (var list in ViewBag.ShoppingLists)
+            {
+                <li class="list-group-item">@list.Name</li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">No lists yet.</li>
+        }
+    </ul>
 </div>
