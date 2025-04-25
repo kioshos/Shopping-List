@@ -2,7 +2,13 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Shopping.Application.CQRS.Commands;
+using Shopping.Application.CQRS.Core;
+using Shopping.Application.CQRS.Handlers;
+using Shopping.Application.CQRS.Query;
+using Shopping.Application.Dtos;
 using Shopping.Application.Interfaces;
+using Shopping.Application.Mediator;
 using Shopping.Application.Services;
 using Shopping.Domain.Entities;
 using Shopping.Infrastructure.Classes;
@@ -42,6 +48,14 @@ builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Categ
 builder.Services.AddScoped<IGenericRepository<ShoppingList>, GenericRepository<ShoppingList>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IShoppingListService, ShoppingListService>();
+
+builder.Services.AddTransient<ICommandHandler<AddItemCommand>, AddItemCommandHandler>();
+builder.Services.AddTransient<ICommandHandler<CreateShoppingListCommand>, CreateShoppingLIstCommandHandler>();
+builder.Services.AddTransient<IQueryHandler<GetCategoryByIdQuery, CategoryDto>, GetCategoryByIdQueryHandler>();
+builder.Services.AddTransient<IQueryHandler<GetAllCategoriesQuery, List<CategoryDto>>, GetAllCategoriesQueryHandler>();
+builder.Services.AddTransient<IQueryHandler<GetAllShoppingListsQuery, List<ShoppingListDto>>, GetAllShoppingListsQueryHandler>();
+builder.Services.AddTransient<IMediator,Mediator>();
+
 
 // Add Unit of Work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

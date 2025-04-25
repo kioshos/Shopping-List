@@ -4,6 +4,6 @@ namespace Shopping.Application.Interfaces;
 
 public interface IShoppingListService
 {
-    Task<List<ShoppingListDto>> GetShoppingListsAsync();
+    Task<List<ShoppingListDto>> GetAllShoppingListsAsync();
     Task CreateShoppingListAsync(ShoppingListDto shoppingListDto);
 }

@@ -19,4 +19,10 @@ public class CategoryService : ICategoryService
         Console.WriteLine(categories.Count);
         return categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList();
     }
+
+    public async Task<CategoryDto> GetCategoryByIdAsync(int id)
+    {
+        var category = await _unitOfWork.Category.GetByIdAsync(id);
+        return new CategoryDto { Id = category.Id, Name = category.Name };
+    }
 }

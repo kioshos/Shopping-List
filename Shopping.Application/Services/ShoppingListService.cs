@@ -15,7 +15,7 @@ public class ShoppingListService : IShoppingListService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<ShoppingListDto>> GetShoppingListsAsync()
+    public async Task<List<ShoppingListDto>> GetAllShoppingListsAsync()
     {
         var shoppingLists = await _unitOfWork.ShoppingList.GetAllAsync();
         return shoppingLists
