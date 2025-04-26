@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -23,10 +26,17 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Item">Add item</a>
                     </li>
                 </ul>
             </div>
+            <form method="get" asp-controller="Language" asp-action="Change" class="d-flex ms-2">
+                <select name="culture" onchange="this.form.submit()" class="form-select form-select-sm">
+                    <option value="en-GB" selected="@(CultureInfo.CurrentUICulture.Name == "en-GB")">English</option>
+                    <option value="uk" selected="@(CultureInfo.CurrentUICulture.Name == "uk")">Українська</option>
+                </select>
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+            </form>
         </div>
     </nav>
 </header>

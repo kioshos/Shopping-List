@@ -1,31 +1,45 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Shopping.Application.CQRS.Commands;
+using Shopping.Application.CQRS.Query;
+using Shopping.Application.Dtos;
+using Shopping.Application.Interfaces;
+using Shopping.Application.Mediator;
 using Shopping.WebUI.Models;
 
 namespace Shopping.WebUI.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IMediator _mediator;
+    public HomeController(IMediator mediator)
     {
-        _logger = logger;
+        _mediator = mediator;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        var shoppingLists = await _mediator.SendAsync<GetAllShoppingListsQuery, List<ShoppingListDto>>(new GetAllShoppingListsQuery());
+        ViewBag.ShoppingLists = shoppingLists;
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpPost]
+    public async Task<IActionResult> CreateList(string listName)
     {
-        return View();
-    }
+        if (!string.IsNullOrWhiteSpace(listName))
+        {
+            var command = new CreateShoppingListCommand
+            {
+                Name = listName,
+                Created = DateTime.Now
+            };
+            
+            await _mediator.SendAsync(command);
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return RedirectToAction("Index");
     }
 }
+// TODO натискаєш на ShoppingList і там можна побачити всі айтеми що там є і дата створення ShoppingList
+// TODO хрестики

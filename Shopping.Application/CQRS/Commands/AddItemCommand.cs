@@ -1,20 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shopping.Application.CQRS.Core;
 
-namespace Shopping.Application.Dtos;
+namespace Shopping.Application.CQRS.Commands;
 
-public sealed record ItemDto
-{ 
-    [Required]
+public class AddItemCommand : ICommand
+{
     public string Name { get; init; }
-    [Required]
     public float Unit { get; init; }
-    [Required]
     public int Quantity { get; init; }
     public bool IsPurchased { get; init; }
-    [Required]
     public decimal Price { get; init; }
-    [Required]
     public  int CategoryId { get; init; }
-    [Required]
     public int ShoppingListId { get; init; }
 }
