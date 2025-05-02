@@ -38,7 +38,7 @@ public class AdminController : Controller
     public async Task<IActionResult> PromoteToAdmin(string id )
     {
         var userToPromote = _userManager.Users.FirstOrDefault(u => u.Id == id);
-
+        
         if (userToPromote != null)
         {
             await _userManager.AddToRoleAsync(userToPromote, "Admin");

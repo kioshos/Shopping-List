@@ -1,4 +1,9 @@
-﻿@model List<Microsoft.AspNetCore.Identity.IdentityUser>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Manage users";
@@ -11,28 +16,32 @@
         {
             foreach (var user in Model)
             {
+                var isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a class="text-decoration-none" asp-controller="Admin" asp-action="Index" asp-route-id="@user.Id">
                         @user.UserName
                     </a>
-                    
-                    <form asp-action="PromoteToAdmin" method="post" class="ml-2">
-                        <input type="hidden" name="id" value="@user.Id" />
-                        <button type="submit" class="btn btn-success btn-sm">
-                            Promote
-                        </button>
-                    </form>
-                    
+
+                    @if (!isAdmin)
+                    {
+                        <form asp-action="PromoteToAdmin" method="post" class="ml-2">
+                            <input type="hidden" name="id" value="@user.Id"/>
+                            <button type="submit" class="btn btn-success btn-sm">
+                                Promote
+                            </button>
+                        </form>
+                    }
+
                     <form asp-action="DeleteUser" method="post" class="ml-2">
                         <input type="hidden" name="id" value="@user.Id" />
                         <button type="submit" class="btn btn-danger btn-sm">
                             Delete
                         </button>
                     </form>
-                    
-                    
+
                 </li>
-                
+
             }
         }
         else
