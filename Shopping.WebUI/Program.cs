@@ -50,10 +50,14 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IShoppingListService, ShoppingListService>();
 
 builder.Services.AddTransient<ICommandHandler<AddItemCommand>, AddItemCommandHandler>();
+builder.Services.AddTransient<ICommandHandler<RemoveShoppingListCommand>, RemoveShoppingListCommandHandler>();
+builder.Services.AddTransient<ICommandHandler<UpdateItemPurchaseStatusCommand>, UpdateItemPurchaseStatusCommandHandler>();
 builder.Services.AddTransient<ICommandHandler<CreateShoppingListCommand>, CreateShoppingLIstCommandHandler>();
 builder.Services.AddTransient<IQueryHandler<GetCategoryByIdQuery, CategoryDto>, GetCategoryByIdQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetAllCategoriesQuery, List<CategoryDto>>, GetAllCategoriesQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetAllShoppingListsQuery, List<ShoppingListDto>>, GetAllShoppingListsQueryHandler>();
+builder.Services.AddTransient<IQueryHandler<GetShoppingListByIdQuery, ShoppingListDto>, GetShoppingLIstByIdQueryHandler>();
+builder.Services.AddTransient<IQueryHandler<GetItemsInShoppingListQuery, List<ItemDto>>, GetItemsInShoppingListQueryHandler>();
 builder.Services.AddTransient<IMediator,Mediator>();
 
 

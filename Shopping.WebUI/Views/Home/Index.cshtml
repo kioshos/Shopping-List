@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 
-
 @inject IViewLocalizer Localizer
 
 @{
@@ -25,7 +24,18 @@
         {
             foreach (var list in ViewBag.ShoppingLists)
             {
-                <li class="list-group-item">@list.Name</li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a class="text-decoration-none" asp-controller="ShoppingList" asp-action="Details" asp-route-id="@list.Id">
+                        @list.Name
+                    </a>
+                    
+                    <form asp-action="DeleteList" method="post" class="ml-2">
+                        <input type="hidden" name="id" value="@list.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            @Localizer["Delete"]
+                        </button>
+                    </form>
+                </li>
             }
         }
         else

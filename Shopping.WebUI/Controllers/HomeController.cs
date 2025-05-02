@@ -40,6 +40,16 @@ public class HomeController : Controller
 
         return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteList(RemoveShoppingListCommand command)
+    {
+        var shoppingListToRemove = new RemoveShoppingListCommand { Id = command.Id };
+    
+        await _mediator.SendAsync(shoppingListToRemove);
+
+        return RedirectToAction("Index");
+    }
 }
 // TODO натискаєш на ShoppingList і там можна побачити всі айтеми що там є і дата створення ShoppingList
 // TODO хрестики
