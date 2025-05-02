@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -39,9 +40,21 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddInfrastructure(connectionString);
+
 builder.Services.AddScoped<IItemServices, ItemService>();
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlite(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.Password.RequireLowercase = false;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationContext>()
+.AddDefaultUI();
+
 
 builder.Services.AddScoped<IGenericRepository<Item>, GenericRepository<Item>>();
 builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
@@ -59,6 +72,8 @@ builder.Services.AddTransient<IQueryHandler<GetAllShoppingListsQuery, List<Shopp
 builder.Services.AddTransient<IQueryHandler<GetShoppingListByIdQuery, ShoppingListDto>, GetShoppingLIstByIdQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetItemsInShoppingListQuery, List<ItemDto>>, GetItemsInShoppingListQueryHandler>();
 builder.Services.AddTransient<IMediator,Mediator>();
+
+builder.Services.AddRazorPages();
 
 
 // Add Unit of Work
@@ -82,6 +97,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

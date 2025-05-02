@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Shopping.Domain.Entities;
 using Shopping.Infrastructure.Classes.Configurations;
 
+
 namespace Shopping.Infrastructure.Classes;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Item> Items { get; set; }
@@ -15,8 +18,16 @@ public class ApplicationContext : DbContext
     {
         
     }
+    public ApplicationContext()
+        : base(new DbContextOptionsBuilder<ApplicationContext>()
+            .UseSqlite("DataSource=Shopping.db") 
+            .Options)
+    {
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+        
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new ItemConfiguration());
         modelBuilder.ApplyConfiguration(new PurchaseHistoryConfiguration());
