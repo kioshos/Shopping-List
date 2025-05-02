@@ -32,17 +32,17 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Item">Add item</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Log in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin">Manager users</a>
-                    </li>
+                   
                     @if (SignInManager.IsSignedIn(User))
                     {
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin">Manager users</a>
+                            </li>
+                        }
+                        
                         <li class="nav-item">
                             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
                         </li>
@@ -61,6 +61,7 @@
                             <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
                         </li>
                     }
+                  
                 </ul>
             </div>
             
