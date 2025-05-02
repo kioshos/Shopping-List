@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shopping.Application.CQRS.Commands;
 using Shopping.Application.CQRS.Query;
@@ -8,7 +9,7 @@ using Shopping.Application.Mediator;
 using Shopping.WebUI.Models;
 
 namespace Shopping.WebUI.Controllers;
-
+[Authorize(Roles = "User")]
 public class HomeController : Controller
 {
     private readonly IMediator _mediator;

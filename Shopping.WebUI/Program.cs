@@ -49,11 +49,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.Password.RequireDigit = true;
     options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireLowercase = false;
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationContext>()
 .AddDefaultUI();
+
 
 
 builder.Services.AddScoped<IGenericRepository<Item>, GenericRepository<Item>>();
@@ -73,6 +75,7 @@ builder.Services.AddTransient<IQueryHandler<GetShoppingListByIdQuery, ShoppingLi
 builder.Services.AddTransient<IQueryHandler<GetItemsInShoppingListQuery, List<ItemDto>>, GetItemsInShoppingListQueryHandler>();
 builder.Services.AddTransient<IMediator,Mediator>();
 
+
 builder.Services.AddRazorPages();
 
 
@@ -80,6 +83,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentityInitializer.SeedRolesAsync(services);
+}
 
 app.UseRequestLocalization();
 
