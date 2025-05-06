@@ -23,17 +23,20 @@ public class ShoppingListService : IShoppingListService
             { 
                 Id = sh.Id, 
                 Name = sh.Name, 
-                Created = sh.CreatedDate 
+                Created = sh.CreatedDate,
+                UserId = sh.UserId
             })
             .ToList();
     }
 
     public async Task CreateShoppingListAsync(ShoppingListDto shoppingListDto)
     {
+        
         var shoppingList = new ShoppingList()
         {
             Name = shoppingListDto.Name,
-            CreatedDate = shoppingListDto.Created
+            CreatedDate = shoppingListDto.Created,
+            UserId = shoppingListDto.UserId
         };
         await _unitOfWork.ShoppingList.AddAsync(shoppingList);
         await _unitOfWork.SaveChangesAsync();
@@ -47,7 +50,8 @@ public class ShoppingListService : IShoppingListService
         {
             Id = shoppingList.Id,
             Name = shoppingList.Name,
-            Created = shoppingList.CreatedDate
+            Created = shoppingList.CreatedDate,
+            UserId = shoppingList.UserId
         };
     }
     public async Task<List<ItemDto>> GetItemsByShoppingListIdAsync(int shoppingListId)

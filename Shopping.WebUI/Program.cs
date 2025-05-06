@@ -42,7 +42,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddInfrastructure(connectionString);
 
 builder.Services.AddScoped<IItemServices, ItemService>();
-builder.Services.AddDbContext<ApplicationContext>(options =>
+builder.Services.AddDbContext<ShoppingDbContext>(options =>
     options.UseSqlite(connectionString));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -53,7 +53,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.Password.RequireLowercase = false;
 })
 .AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<ApplicationContext>()
+.AddEntityFrameworkStores<ShoppingDbContext>()
 .AddDefaultUI();
 
 
@@ -73,6 +73,7 @@ builder.Services.AddTransient<IQueryHandler<GetAllCategoriesQuery, List<Category
 builder.Services.AddTransient<IQueryHandler<GetAllShoppingListsQuery, List<ShoppingListDto>>, GetAllShoppingListsQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetShoppingListByIdQuery, ShoppingListDto>, GetShoppingLIstByIdQueryHandler>();
 builder.Services.AddTransient<IQueryHandler<GetItemsInShoppingListQuery, List<ItemDto>>, GetItemsInShoppingListQueryHandler>();
+builder.Services.AddTransient<IQueryHandler<GetAllShoppingListsByUserIdQuery, List<ShoppingListDto>>, GetAllShoppingListsByUserIdHandler>();
 builder.Services.AddTransient<IMediator,Mediator>();
 
 

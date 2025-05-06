@@ -6,4 +6,5 @@ public sealed record ShoppingListDto
     public string Name { get; init; }
     public DateTime Created { get; init; }
     
+    public string UserId { get; init; }
 }

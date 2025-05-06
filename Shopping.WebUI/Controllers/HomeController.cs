@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shopping.Application.CQRS.Commands;
 using Shopping.Application.CQRS.Query;
@@ -13,31 +15,37 @@ namespace Shopping.WebUI.Controllers;
 public class HomeController : Controller
 {
     private readonly IMediator _mediator;
-    public HomeController(IMediator mediator)
+    private readonly UserManager<IdentityUser> _userManager;
+    public HomeController(IMediator mediator, UserManager<IdentityUser> userManager)
     {
         _mediator = mediator;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
     {
-        var shoppingLists = await _mediator.SendAsync<GetAllShoppingListsQuery, List<ShoppingListDto>>(new GetAllShoppingListsQuery());
+        var shoppingLists = await _mediator.SendAsync<GetAllShoppingListsByUserIdQuery, List<ShoppingListDto>>(new GetAllShoppingListsByUserIdQuery { UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)});
         ViewBag.ShoppingLists = shoppingLists;
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateList(string listName)
-    {
+    {   
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         if (!string.IsNullOrWhiteSpace(listName))
         {
             var command = new CreateShoppingListCommand
             {
                 Name = listName,
-                Created = DateTime.Now
+                Created = DateTime.Now,
+                UserId = userId
             };
-            
+
             await _mediator.SendAsync(command);
         }
+
 
         return RedirectToAction("Index");
     }

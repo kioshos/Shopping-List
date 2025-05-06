@@ -9,13 +9,13 @@ namespace Shopping.Infrastructure.Repository;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly ApplicationContext _applicationContext;
+    private readonly ShoppingDbContext _shoppingDbContext;
     private readonly DbSet<T> _dbSet;
 
-    public GenericRepository(ApplicationContext applicationContext)
+    public GenericRepository(ShoppingDbContext shoppingDbContext)
     {
-        _applicationContext = applicationContext;
-        this._dbSet = _applicationContext.Set<T>();
+        _shoppingDbContext = shoppingDbContext;
+        this._dbSet = _shoppingDbContext.Set<T>();
     }
     public async Task<ReadOnlyCollection<T>> GetAllAsync()
     {

@@ -10,7 +10,7 @@ using Shopping.Infrastructure.Classes;
 
 namespace Shopping.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationContext))]
+    [DbContext(typeof(ShoppingDbContext))]
     [Migration("20250309151430_Initial")]
     partial class Initial
     {

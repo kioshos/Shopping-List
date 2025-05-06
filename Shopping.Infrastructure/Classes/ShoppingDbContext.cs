@@ -7,19 +7,19 @@ using Shopping.Infrastructure.Classes.Configurations;
 
 namespace Shopping.Infrastructure.Classes;
 
-public class ApplicationContext : IdentityDbContext<IdentityUser>
+public class ShoppingDbContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<ShoppingList> ShoppingLists { get; set; }
     public DbSet<PurchaseHistory> PurchaseHistories { get; set; }
-    public ApplicationContext(DbContextOptions<ApplicationContext> options)
+    public ShoppingDbContext(DbContextOptions<ShoppingDbContext> options)
         : base(options)
     {
         
     }
-    public ApplicationContext()
-        : base(new DbContextOptionsBuilder<ApplicationContext>()
+    public ShoppingDbContext()
+        : base(new DbContextOptionsBuilder<ShoppingDbContext>()
             .UseSqlite("DataSource=Shopping.db") 
             .Options)
     {
