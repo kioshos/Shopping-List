@@ -22,6 +22,7 @@ public class CreateShoppingLIstCommandHandler : ICommandHandler<CreateShoppingLi
             Id = command.Id,
             Name = command.Name,
             CreatedDate = command.Created,
+            UserId = command.UserId
         };
         await _unitOfWork.ShoppingList.AddAsync(shoppingList);
         await _unitOfWork.SaveChangesAsync();

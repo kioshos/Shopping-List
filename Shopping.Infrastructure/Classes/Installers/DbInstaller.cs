@@ -7,7 +7,7 @@ public static class DbInstaller
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<ApplicationContext>(options =>
+        services.AddDbContext<ShoppingDbContext>(options =>
             options.UseSqlite(connectionString));
 
         return services;

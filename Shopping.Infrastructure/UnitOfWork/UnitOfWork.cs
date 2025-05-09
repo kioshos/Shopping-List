@@ -6,12 +6,12 @@ namespace Shopping.Infrastructure.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationContext _context;
+    private readonly ShoppingDbContext _context;
     public IGenericRepository<Item> Item {get;}
     public IGenericRepository<Category> Category { get; }
     public IGenericRepository<ShoppingList> ShoppingList { get; }
 
-    public UnitOfWork(ApplicationContext context, IGenericRepository<Item> item, 
+    public UnitOfWork(ShoppingDbContext context, IGenericRepository<Item> item, 
         IGenericRepository<Category> category, 
         IGenericRepository<ShoppingList> shoppingList)
     {

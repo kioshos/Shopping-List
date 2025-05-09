@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Shopping.Application.Interfaces;
 using Shopping.WebUI.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,7 +23,7 @@ namespace Shopping.WebUI.Controllers
         {
             var categories = await _mediator.SendAsync<GetAllCategoriesQuery, List<CategoryDto>>(new GetAllCategoriesQuery());
 
-           var shoppingLists = await _mediator.SendAsync<GetAllShoppingListsQuery, List<ShoppingListDto>>(new GetAllShoppingListsQuery());
+           var shoppingLists = await _mediator.SendAsync<GetAllShoppingListsByUserIdQuery, List<ShoppingListDto>>(new GetAllShoppingListsByUserIdQuery(){UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)});
                 
             ViewBag.Categories = categories.Select(c => new SelectListItem
             {
@@ -61,5 +62,6 @@ namespace Shopping.WebUI.Controllers
             
             return RedirectToAction("Index"); 
         }
+        
     }
 }
