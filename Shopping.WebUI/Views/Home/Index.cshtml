@@ -10,41 +10,45 @@
 }
 
 <div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">@Localizer["Create a new Shopping List"] </h1>
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-5">
+            <h1 class="display-5 text-center mb-4 text-primary fw-bold">
+                @Localizer["Create a new Shopping List"]
+            </h1>
 
-    <form asp-action="CreateList" method="post" class="mb-5">
-        <div class="input-group">
-            <input type="text" name="listName" class="form-control" placeholder="@Localizer["Enter list name"]..." required />
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">@Localizer["Create"]</button>
-            </div>
-        </div>
-    </form>
+            <form asp-action="CreateList" method="post" class="mb-4">
+                <div class="input-group shadow-sm">
+                    <input type="text" name="listName" class="form-control rounded-start-pill" placeholder="@Localizer["Enter list name"]..." required />
+                    <button type="submit" class="btn btn-outline-primary rounded-end-pill px-4">
+                        <i class="bi bi-plus-lg me-1"></i> @Localizer["Create"]
+                    </button>
+                </div>
+            </form>
 
-    <h3 class="mb-3">@Localizer["Existing Lists"]:</h3>
-    <ul class="list-group">
-            @if (ViewBag.ShoppingLists != null)
-            {
-                foreach (var list in ViewBag.ShoppingLists)
+            <h3 class="mb-3 text-secondary">@Localizer["Existing Lists"]:</h3>
+            <ul class="list-group list-group-flush">
+                @if (ViewBag.ShoppingLists != null)
                 {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a class="text-decoration-none" asp-controller="ShoppingList" asp-action="Details" asp-route-id="@list.Id">
-                            @list.Name
-                        </a>
-
-                        <form asp-action="DeleteList" method="post" class="ml-2">
-                            <input type="hidden" name="id" value="@list.Id"/>
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                @Localizer["Delete"]
-                            </button>
-                        </form>
-
-                    </li>
+                    foreach (var list in ViewBag.ShoppingLists)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-2 rounded-3 shadow-sm mb-2">
+                            <a class="text-decoration-none text-dark fw-semibold" asp-controller="ShoppingList" asp-action="Details" asp-route-id="@list.Id">
+                                @list.Name
+                            </a>
+                            <form asp-action="DeleteList" method="post" class="ms-2">
+                                <input type="hidden" name="id" value="@list.Id"/>
+                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                    <i class="bi bi-trash"></i> @Localizer["Delete"]
+                                </button>
+                            </form>
+                        </li>
+                    }
                 }
-            }
-            else
-            {
-                <li class="list-group-item">No lists yet.</li>
-            }
-    </ul>
+                else
+                {
+                    <li class="list-group-item text-muted">@Localizer["No lists yet."]</li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>

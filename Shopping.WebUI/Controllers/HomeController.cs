@@ -15,11 +15,9 @@ namespace Shopping.WebUI.Controllers;
 public class HomeController : Controller
 {
     private readonly IMediator _mediator;
-    private readonly UserManager<IdentityUser> _userManager;
-    public HomeController(IMediator mediator, UserManager<IdentityUser> userManager)
+    public HomeController(IMediator mediator)
     {
         _mediator = mediator;
-        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
@@ -60,5 +58,3 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
 }
-// TODO натискаєш на ShoppingList і там можна побачити всі айтеми що там є і дата створення ShoppingList
-// TODO хрестики
